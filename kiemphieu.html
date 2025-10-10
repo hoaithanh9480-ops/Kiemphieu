@@ -972,6 +972,26 @@
                     <span>Số đã chọn: <strong id="editSelectedCount">0</strong></span>
                 </div>
             </div>
+            <!-- Modal gửi Gmail -->
+        <div id="gmailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h3>📧 Gửi báo cáo qua Gmail</h3>
+            <span class="close" onclick="closeGmailModal()">&times;</span>
+            </div>
+            <div>
+            <label>Email nhận:</label>
+            <input type="email" id="gmailTo" class="form-control mb-10" value="thanh941980@gmail.com">
+            <label>Tiêu đề:</label>
+            <input type="text" id="gmailSubject" class="form-control mb-10" value="BÁO CÁO KIỂM PHIẾU">
+            <label>Nội dung:</label>
+            <textarea id="gmailBody" class="form-control mb-20" rows="5">Kính gửi,\n\nĐính kèm file báo cáo kiểm phiếu chi tiết.\n\nTrân trọng,\nBan kiểm phiếu</textarea>
+            <div style="text-align:right;">
+                <button class="btn btn-success" onclick="sendGmail()">Gửi Gmail</button>
+                <button class="btn btn-danger" onclick="closeGmailModal()">Đóng</button>
+            </div>
+            </div>
+        </div>
         </div>
     </div>
 
@@ -1686,21 +1706,45 @@ function downloadExcelFile() {
 // =================== MỞ GMAIL GỬI FILE ===================
 function openGmail() {
     try {
-        const subject = `BÁO CÁO KIỂM PHIẾU - ${new Date().toLocaleDateString('vi-VN')}`;
-        const body = `Kính gửi,\n\nĐính kèm file báo cáo kiểm phiếu chi tiết.\n\nTrân trọng,\nBan kiểm phiếu`;
-        const emailTo = "thanh941980@gmail.com";
+        // Nếu modal chưa tồn tại thì tạo nhanh
+        let modal = document.getElementById('gmailModal');
+        if (!modal) {
+            const html = `
+            <div id="gmailModal" class="modal">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3>📧 Gửi báo cáo qua Gmail</h3>
+                  <span class="close" onclick="closeGmailModal()">&times;</span>
+                </div>
+                <div>
+                  <label>Email nhận:</label>
+                  <input type="email" id="gmailTo" class="form-control mb-10" value="thanh941980@gmail.com">
+                  <label>Tiêu đề:</label>
+                  <input type="text" id="gmailSubject" class="form-control mb-10" 
+                         value="BÁO CÁO KIỂM PHIẾU - ${new Date().toLocaleDateString('vi-VN')}">
+                  <label>Nội dung:</label>
+                  <textarea id="gmailBody" class="form-control mb-20" rows="5">Kính gửi,
 
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailTo)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.open(gmailUrl, "_blank");
+Đính kèm file báo cáo kiểm phiếu chi tiết.
 
-        alert("📧 Gmail đang được mở.\nHãy đính kèm file Excel vừa tải để gửi đi!");
-        return true;
+Trân trọng,
+Ban kiểm phiếu</textarea>
+                  <div style="text-align:right;">
+                    <button class="btn btn-success" onclick="sendGmail()">Gửi Gmail</button>
+                    <button class="btn btn-danger" onclick="closeGmailModal()">Đóng</button>
+                  </div>
+                </div>
+              </div>
+            </div>`;
+            document.body.insertAdjacentHTML("beforeend", html);
+        }
+
+        document.getElementById('gmailModal').style.display = 'block';
     } catch (error) {
-        console.error("❌ Lỗi khi mở Gmail:", error);
-        alert("Lỗi khi mở Gmail: " + error.message);
-        return false;
+        console.error("❌ Lỗi khi mở form Gmail:", error);
+        alert("Lỗi khi mở form Gmail: " + error.message);
     }
-}    
+}
 
         // Khởi tạo ứng dụng
         async function initApp() {
