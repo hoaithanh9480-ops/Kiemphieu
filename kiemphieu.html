@@ -1176,17 +1176,17 @@
             let trangThai = '';
             const soUngVienDuocChon = selectedIds.length;
 
-            if (soUngVienDuocChon === 0 || soUngVienDuocChon === candidates.length) {
-                trangThai = 'Không hợp lệ';
-            } else if (soUngVienDuocChon === soDu) {
-                trangThai = 'Hợp lệ';
-            } else if (soUngVienDuocChon < soDu) {
-                trangThai = 'Không hợp lệ';
-            } else if (soUngVienDuocChon < soNguoiDuocBau) {
-                trangThai = 'Bầu thiếu';
-            } else {
-                trangThai = 'Không hợp lệ';
-            }
+            // Logic xác định trạng thái mới
+if (soUngVienDuocChon === soDu) {
+    trangThai = 'Hợp lệ';
+} else if (soUngVienDuocChon > soDu && soUngVienDuocChon <= soNguoiDuocBau) {
+    trangThai = 'Bầu thiếu';
+} else if (soUngVienDuocChon > soNguoiDuocBau) {
+    trangThai = 'Không hợp lệ';
+} else {
+    // Trường hợp còn lại (chọn ít hơn số dư hoặc bằng 0)
+    trangThai = 'Không hợp lệ';
+}
             
             // Lưu thông tin phiếu
             phieuDetails.push({
@@ -1396,17 +1396,23 @@
             const soDu = parseInt(document.getElementById('soDu').textContent) || 0;
             const soUngVienDuocChon = selectedIds.length;
 
-            if (soUngVienDuocChon === 0 || soUngVienDuocChon === candidates.length) {
-                phieu.trangThai = 'Không hợp lệ';
-            } else if (soUngVienDuocChon === soDu) {
-                phieu.trangThai = 'Hợp lệ';
-            } else if (soUngVienDuocChon < soDu) {
-                phieu.trangThai = 'Không hợp lệ';
-            } else if (soUngVienDuocChon < soNguoiDuocBau) {
-                phieu.trangThai = 'Bầu thiếu';
-            } else {
-                phieu.trangThai = 'Không hợp lệ';
-            }
+            javascript
+// Trong hàm saveEditedPhieu() - tìm phần tính lại trạng thái
+const soNguoiDuocBau = parseInt(document.getElementById('soNguoiDuocBau').textContent) || 0;
+const soDu = parseInt(document.getElementById('soDu').textContent) || 0;
+const soUngVienDuocChon = selectedIds.length;
+
+// Logic xác định trạng thái mới
+if (soUngVienDuocChon === soDu) {
+    phieu.trangThai = 'Hợp lệ';
+} else if (soUngVienDuocChon > soDu && soUngVienDuocChon <= soNguoiDuocBau) {
+    phieu.trangThai = 'Bầu thiếu';
+} else if (soUngVienDuocChon > soNguoiDuocBau) {
+    phieu.trangThai = 'Không hợp lệ';
+} else {
+    // Trường hợp còn lại (chọn ít hơn số dư hoặc bằng 0)
+    phieu.trangThai = 'Không hợp lệ';
+}
 
             // Cập nhật số phiếu của ứng viên
             candidates.forEach(candidate => {
